@@ -1,0 +1,2243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>good things</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Slackside+One&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cream: #FDFCFA;
+            --cream-dark: #F5F2EE;
+            --off-white: #F9F7F4;
+            --charcoal: #1A1A1A;
+            --soft-gray: #6B6B6B;
+            --light-gray: #E5E5E5;
+            --clay: #E8DED0;
+            --shadow: rgba(0, 0, 0, 0.06);
+            --shadow-hover: rgba(0, 0, 0, 0.12);
+            --border: rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 24px 24px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        .main-wrapper {
+            transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .main-wrapper.sidebar-open {
+            margin-left: 480px;
+        }
+
+        @media (max-width: 768px) {
+            .main-wrapper.sidebar-open {
+                margin-left: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 32px;
+            padding-top: 24px;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-title {
+            font-family: 'Slackside One', cursive;
+            font-size: 55px;
+            font-weight: 400;
+            letter-spacing: 0;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .main-tagline {
+            font-size: 15px;
+            color: var(--soft-gray);
+            margin: 0;
+        }
+
+        .main-date {
+            font-size: 14px;
+            color: var(--soft-gray);
+            margin: 0 0 12px 0;
+        }
+
+        .subheading-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin-top: 4px;
+        }
+
+        /* View toggle with sliding indicator */
+        .view-toggle {
+            display: inline-flex;
+            gap: 0;
+            background: white;
+            padding: 4px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px var(--shadow);
+            position: relative;
+        }
+
+        .toggle-indicator {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            height: calc(100% - 8px);
+            background: var(--charcoal);
+            border-radius: 6px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            color: var(--soft-gray);
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .toggle-btn:hover {
+            color: var(--charcoal);
+        }
+
+        .toggle-btn.active {
+            color: white;
+        }
+
+        .toggle-btn .tab-icon {
+            width: 14px;
+            height: 14px;
+            stroke-width: 1.5;
+        }
+
+
+        /* Add yours button - softer style */
+        .write-btn {
+            background: white;
+            color: var(--charcoal);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px var(--shadow);
+        }
+
+        .write-btn:hover {
+            background: var(--off-white);
+            border-color: var(--charcoal);
+            transform: translateY(-1px);
+        }
+
+        .write-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Mode toggle (Organize | Shuffle) with hand-drawn icons */
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+        }
+
+        .mode-option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--soft-gray);
+            cursor: pointer;
+            transition: color 0.2s ease;
+            user-select: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .mode-option:hover {
+            color: var(--charcoal);
+        }
+
+        .mode-option.active {
+            color: var(--charcoal);
+            font-weight: 500;
+        }
+
+        .mode-option .mode-icon {
+            opacity: 0.4;
+        }
+
+        .mode-option.active .mode-icon {
+            opacity: 1;
+        }
+
+        .mode-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Welcome section */
+        .welcome-section {
+            max-width: 480px;
+            margin: 48px auto;
+            padding: 0 24px;
+        }
+
+        .welcome-card {
+            background: white;
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .welcome-content {
+            font-family: 'SF Mono', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--charcoal);
+        }
+
+        .welcome-content p {
+            margin-bottom: 12px;
+        }
+
+        /* Date dividers */
+        .date-divider {
+            column-span: all;
+            width: 100%;
+            padding: 24px 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .date-divider span {
+            font-size: 12px;
+            color: var(--soft-gray);
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        /* Notes grid - Pinterest/masonry style columns */
+        .notes-grid {
+            column-count: 8;
+            column-gap: 12px;
+            padding: 24px 0 48px;
+            position: relative;
+            min-height: 500px;
+        }
+
+        .notes-grid.shuffle-mode {
+            column-count: unset;
+        }
+
+        @media (max-width: 1400px) {
+            .notes-grid {
+                column-count: 6;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .notes-grid {
+                column-count: 5;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .notes-grid {
+                column-count: 4;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .notes-grid {
+                column-count: 3;
+                column-gap: 10px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .notes-grid {
+                column-count: 2;
+            }
+        }
+
+        .note-card {
+            background: white;
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 2px 4px var(--shadow);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            display: flex;
+            break-inside: avoid;
+            margin-bottom: 12px;
+            flex-direction: column;
+            position: relative;
+            user-select: none;
+            /* Smooth transitions for organize/shuffle */
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow 0.3s ease,
+                        left 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Clean grid alignment in organize mode */
+        .notes-grid:not(.shuffle-mode) .note-card {
+            transform: rotate(0deg);
+        }
+
+        .notes-grid:not(.shuffle-mode) .note-card:hover {
+            transform: translateY(-4px) rotate(0deg) scale(1.03);
+            box-shadow: 0 8px 16px var(--shadow-hover);
+            z-index: 10;
+        }
+
+        /* Shuffle mode cards */
+        .notes-grid.shuffle-mode .note-card {
+            position: absolute;
+            cursor: grab;
+            width: 160px;
+        }
+
+        .notes-grid.shuffle-mode .note-card:active {
+            cursor: grabbing;
+        }
+
+        .notes-grid.shuffle-mode .note-card.dragging {
+            box-shadow: 0 12px 24px var(--shadow-hover);
+            z-index: 100;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .note-card.mine {
+            border-color: var(--clay);
+            background: linear-gradient(135deg, #FFFEFB 0%, #F9F7F4 100%);
+            box-shadow: 0 2px 4px var(--shadow), 0 0 0 2px var(--clay);
+        }
+
+        .note-items {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            counter-reset: item;
+            flex: 1;
+            margin-bottom: 10px;
+        }
+
+        .note-item {
+            font-family: 'SF Mono', 'Courier New', monospace;
+            font-size: 11px;
+            line-height: 1.4;
+            color: var(--charcoal);
+            counter-increment: item;
+        }
+
+        .note-item::before {
+            content: counter(item) ". ";
+            color: var(--soft-gray);
+            font-weight: 600;
+        }
+
+        .note-meta {
+            padding-top: 8px;
+            border-top: 1px solid var(--border);
+            margin-top: auto;
+            font-size: 10px;
+            color: var(--soft-gray);
+            opacity: 0.7;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Hand-drawn scribble icons for seed notes - in footer */
+        .seed-icon {
+            width: 14px;
+            height: 14px;
+            opacity: 0.5;
+        }
+
+        /* Sidebar - slides from left */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 480px;
+            max-width: 100%;
+            height: 100vh;
+            background: var(--cream-dark);
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 101;
+            overflow: hidden;
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-title-simple {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--soft-gray);
+            padding: 8px;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--charcoal);
+        }
+
+        .sidebar-subtitle {
+            font-size: 14px;
+            color: var(--soft-gray);
+            margin-bottom: 20px;
+        }
+
+        /* Form */
+        .entry-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .text-input {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            font-size: 15px;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            color: var(--charcoal);
+            resize: vertical;
+            min-height: 180px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            line-height: 1.8;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: var(--charcoal);
+            box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.1);
+        }
+
+        .text-input::placeholder {
+            color: #B8B8B8;
+            line-height: 1.8;
+        }
+
+        /* Apple-style toggle */
+        .anon-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .anon-label {
+            font-size: 13px;
+            color: var(--soft-gray);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--light-gray);
+            transition: .3s;
+            border-radius: 26px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        input:checked + .slider {
+            background-color: var(--charcoal);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(18px);
+        }
+
+        /* Preview section - actual card size */
+        .preview-section {
+            margin-top: 4px;
+        }
+
+        .preview-label {
+            font-size: 12px;
+            color: var(--soft-gray);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .preview-card {
+            background: white;
+            border-radius: 6px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 4px var(--shadow);
+            min-height: 120px;
+            width: 160px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-card.mine-preview {
+            border-color: var(--clay);
+            background: linear-gradient(135deg, #FFFEFB 0%, #F9F7F4 100%);
+            box-shadow: 0 2px 4px var(--shadow), 0 0 0 2px var(--clay);
+        }
+
+        .preview-items {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            counter-reset: item;
+            flex: 1;
+            margin-bottom: 10px;
+        }
+
+        .preview-item {
+            font-family: 'SF Mono', 'Courier New', monospace;
+            font-size: 11px;
+            line-height: 1.4;
+            color: var(--charcoal);
+            counter-increment: item;
+            opacity: 0.5;
+        }
+
+        .preview-item.has-content {
+            opacity: 1;
+        }
+
+        .preview-item::before {
+            content: counter(item) ". ";
+            color: var(--soft-gray);
+            font-weight: 600;
+        }
+
+        .preview-meta {
+            padding-top: 8px;
+            border-top: 1px solid var(--border);
+            margin-top: auto;
+            font-size: 10px;
+            color: var(--soft-gray);
+            opacity: 0.7;
+        }
+
+        .submit-btn {
+            background: var(--charcoal);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Submit area container */
+        .submit-area {
+            position: relative;
+        }
+
+        /* Sidebar pages container */
+        .sidebar-pages {
+            display: flex;
+            width: 200%;
+            height: 100%;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-pages.show-reminder {
+            transform: translateX(-50%);
+        }
+
+        .sidebar-page {
+            width: 50%;
+            flex-shrink: 0;
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        /* Reminder page */
+        .reminder-page {
+            background: var(--cream-dark);
+        }
+
+        .reminder-back {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: var(--soft-gray);
+            cursor: pointer;
+            padding: 0;
+            margin-bottom: 32px;
+            transition: color 0.2s ease;
+        }
+
+        .reminder-back:hover {
+            color: var(--charcoal);
+        }
+
+        .reminder-back svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .reminder-header {
+            margin-bottom: 32px;
+        }
+
+        .reminder-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: 8px;
+        }
+
+        .reminder-subtitle {
+            font-size: 14px;
+            color: var(--soft-gray);
+            line-height: 1.5;
+        }
+
+        .reminder-field {
+            margin-bottom: 24px;
+        }
+
+        .reminder-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--soft-gray);
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .reminder-time-picker {
+            display: flex;
+            gap: 8px;
+        }
+
+        .time-select {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+            color: var(--charcoal);
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .time-select:focus {
+            outline: none;
+            border-color: var(--soft-gray);
+        }
+
+        .timezone-display {
+            padding: 12px 16px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--charcoal);
+        }
+
+        .timezone-change {
+            font-size: 12px;
+            color: var(--soft-gray);
+            margin-top: 6px;
+            cursor: pointer;
+        }
+
+        .timezone-change:hover {
+            color: var(--charcoal);
+            text-decoration: underline;
+        }
+
+        .reminder-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: auto;
+            padding-top: 32px;
+        }
+
+        .reminder-btn {
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .reminder-btn.primary {
+            background: var(--charcoal);
+            color: white;
+        }
+
+        .reminder-btn.primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .reminder-btn.secondary {
+            background: transparent;
+            color: var(--soft-gray);
+        }
+
+        .reminder-btn.secondary:hover {
+            color: var(--charcoal);
+        }
+
+        /* Reminder note - subtle text below submit (shown after setup) */
+        .reminder-note {
+            font-size: 12px;
+            color: var(--soft-gray);
+            text-align: center;
+            margin-top: 16px;
+            opacity: 0.7;
+            line-height: 1.5;
+        }
+
+        .reminder-time {
+            font-weight: 500;
+        }
+
+        .reminder-change {
+            color: var(--soft-gray);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .reminder-change:hover {
+            color: var(--charcoal);
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            50% {
+                transform: scale(1.05) translateY(-5px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Initial load animation only - controlled by .initial-load class */
+        .notes-grid.initial-load .note-card {
+            animation: fadeInUp 0.4s ease forwards;
+            opacity: 0;
+        }
+
+        .notes-grid.initial-load .note-card:nth-child(1) { animation-delay: 0.02s; }
+        .notes-grid.initial-load .note-card:nth-child(2) { animation-delay: 0.04s; }
+        .notes-grid.initial-load .note-card:nth-child(3) { animation-delay: 0.06s; }
+        .notes-grid.initial-load .note-card:nth-child(4) { animation-delay: 0.08s; }
+        .notes-grid.initial-load .note-card:nth-child(5) { animation-delay: 0.1s; }
+        .notes-grid.initial-load .note-card:nth-child(6) { animation-delay: 0.12s; }
+
+        .note-card.new {
+            animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--charcoal);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Desktop bottom fade gradient */
+        .container::after {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--cream) 80%);
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* Scroll-triggered fade-in for cards */
+        .note-card.fade-in-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .note-card.fade-in-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==================== MOBILE STYLES ==================== */
+        @media (max-width: 768px) {
+            /* Fade-in animation */
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            /* Mobile header - simple left-aligned stack with breathing room */
+            header {
+                padding-top: 24px;
+                margin-bottom: 28px;
+                animation: fadeInUp 0.6s ease-out;
+            }
+
+            .main-title {
+                font-size: 58px;
+                margin-bottom: 12px;
+            }
+
+            .main-tagline {
+                font-size: 14px;
+                margin-bottom: 4px;
+            }
+
+            .main-date {
+                font-size: 13px;
+                margin-bottom: 20px;
+            }
+
+            /* Hide the header row layout on mobile - stack everything */
+            .header-row {
+                display: contents;
+            }
+
+            /* Hide view toggle from header (it's now floating) */
+            .view-toggle {
+                display: none;
+            }
+
+            /* Organize/Shuffle - icons only, right aligned */
+            .mode-toggle {
+                position: absolute;
+                top: 12px;
+                right: 12px;
+                gap: 4px;
+                background: white;
+                padding: 4px;
+                border-radius: 6px;
+                border: 1px solid var(--border);
+            }
+
+            .mode-option {
+                font-size: 0; /* Hide text */
+                padding: 6px;
+                gap: 0;
+            }
+
+            .mode-option .mode-icon {
+                width: 16px;
+                height: 16px;
+            }
+
+            /* Add yours button wider */
+            .write-btn {
+                width: 100%;
+                padding: 14px 24px;
+                font-size: 16px;
+            }
+
+            /* Card grid - 2 columns */
+            .notes-grid {
+                column-count: 2 !important;
+                column-gap: 12px;
+                padding-bottom: 100px; /* Space for floating toggle */
+            }
+
+            .note-card {
+                font-size: 13px;
+            }
+
+            /* Bottom fade gradient */
+            .container::after {
+                content: '';
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 120px;
+                background: linear-gradient(to bottom, transparent, white 70%);
+                pointer-events: none;
+                z-index: 50;
+            }
+
+            /* Floating view toggle - matches desktop style */
+            .mobile-view-toggle {
+                position: fixed;
+                bottom: 24px;
+                right: 16px;
+                display: inline-flex;
+                gap: 0;
+                background: white;
+                padding: 4px;
+                border-radius: 10px;
+                border: 1px solid var(--border);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+                z-index: 100;
+            }
+
+            .mobile-toggle-btn {
+                background: none;
+                border: none;
+                padding: 8px 14px;
+                border-radius: 6px;
+                font-size: 13px;
+                font-weight: 500;
+                font-family: inherit;
+                cursor: pointer;
+                transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                            color 0.2s ease;
+                color: var(--soft-gray);
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            .mobile-toggle-btn .tab-icon {
+                width: 14px;
+                height: 14px;
+                transition: stroke 0.2s ease;
+            }
+
+            .mobile-toggle-btn .toggle-label {
+                display: none;
+                transition: opacity 0.2s ease;
+            }
+
+            .mobile-toggle-btn.active {
+                background: var(--charcoal);
+                color: white;
+            }
+
+            .mobile-toggle-btn.active .toggle-label {
+                display: inline;
+            }
+
+            .mobile-toggle-btn.active .tab-icon {
+                stroke: white;
+            }
+
+            /* Bottom sheet sidebar */
+            .sidebar {
+                top: auto;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: auto;
+                max-height: 90vh;
+                border-radius: 24px 24px 0 0;
+                transform: translateY(100%);
+                box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.15);
+            }
+
+            .sidebar.active {
+                transform: translateY(0);
+            }
+
+            /* Blur backdrop */
+            .sidebar-backdrop {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                z-index: 100;
+            }
+
+            /* Centered wider submit button */
+            .submit-area {
+                text-align: center;
+            }
+
+            .submit-btn {
+                width: 100%;
+                max-width: 280px;
+                margin: 8px auto 0;
+            }
+
+            .sidebar-backdrop.active {
+                display: block;
+            }
+
+            .sidebar-page {
+                padding: 24px 20px 32px;
+            }
+
+            /* Drag handle for bottom sheet */
+            .sidebar-handle {
+                width: 40px;
+                height: 4px;
+                background: var(--light-gray);
+                border-radius: 2px;
+                margin: 0 auto 16px;
+            }
+        }
+
+        /* Hide mobile-only elements on desktop */
+        @media (min-width: 769px) {
+            .mobile-view-toggle {
+                display: none !important;
+            }
+            .sidebar-handle {
+                display: none !important;
+            }
+            .sidebar-backdrop {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper" id="mainWrapper">
+        <div class="container">
+            <header>
+                <h1 class="main-title">good things</h1>
+                
+                <div class="header-row">
+                    <p class="main-tagline">The practise is in the noticing.</p>
+                    <div class="view-toggle" id="viewToggle">
+                        <div class="toggle-indicator" id="toggleIndicator"></div>
+                        <button class="toggle-btn active" data-view="everyone">
+                            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <!-- Wobbly globe -->
+                                <path d="M12 2.5c-5.2 0.1-9.3 4.4-9.5 9.5 0.2 5.3 4.5 9.4 9.5 9.5 5.1-0.1 9.3-4.2 9.5-9.5-0.2-5.1-4.3-9.4-9.5-9.5z"/>
+                                <path d="M2.8 12.2c6.2-0.3 12.1 0.1 18.4-0.2"/>
+                                <path d="M12 2.5c-2.1 2.3-3.2 5.8-3.1 9.5 0.1 3.8 1.3 7.2 3.1 9.5"/>
+                                <path d="M12 2.5c2.2 2.4 3.3 5.9 3.1 9.5-0.1 3.7-1.2 7.1-3.1 9.5"/>
+                            </svg>
+                            Everyone
+                        </button>
+                        <button class="toggle-btn" data-view="mine">
+                            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <!-- Wobbly envelope -->
+                                <path d="M3.2 5.8c5.8-0.2 11.7 0.1 17.6-0.1 0.3 4.1-0.1 8.3 0.2 12.4-5.9 0.2-11.8-0.1-17.8 0.2 0.1-4.2-0.2-8.4 0-12.5z"/>
+                                <path d="M3.5 6.2c2.8 2.4 5.4 5.1 8.5 7.2 3-2.2 5.7-4.9 8.5-7.1"/>
+                            </svg>
+                            Mine
+                        </button>
+                        <button class="toggle-btn" data-view="welcome">
+                            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <!-- Wobbly heart -->
+                                <path d="M12 20.5c-1.8-1.5-3.8-3.2-5.5-5-1.8-1.9-3.5-4-4.2-6.3-0.5-1.7-0.3-3.6 0.8-5 1.2-1.5 3.1-2.2 4.9-1.9 1.6 0.3 3 1.3 4 2.6 1-1.4 2.5-2.4 4.1-2.6 1.8-0.3 3.7 0.5 4.9 2 1 1.4 1.2 3.3 0.7 4.9-0.7 2.3-2.4 4.4-4.2 6.3-1.7 1.8-3.7 3.5-5.5 5z"/>
+                            </svg>
+                            Welcome
+                        </button>
+                    </div>
+                </div>
+                
+                <p class="main-date" id="mainDate"></p>
+                
+                <div class="header-row">
+                    <button class="write-btn" onclick="openSidebar()">Add yours</button>
+                    <div class="mode-toggle">
+                        <span class="mode-option active" data-mode="organize">
+                            <svg class="mode-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7" rx="1" />
+                                <rect x="14" y="3" width="7" height="7" rx="1" />
+                                <rect x="3" y="14" width="7" height="7" rx="1" />
+                                <rect x="14" y="14" width="7" height="7" rx="1" />
+                            </svg>
+                            Organize
+                        </span>
+                        <span class="mode-option" data-mode="shuffle">
+                            <svg class="mode-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="4" width="6" height="6" rx="1" transform="rotate(-12 5 7)" />
+                                <rect x="14" y="2" width="6" height="6" rx="1" transform="rotate(8 17 5)" />
+                                <rect x="5" y="14" width="6" height="6" rx="1" transform="rotate(5 8 17)" />
+                                <rect x="15" y="13" width="6" height="6" rx="1" transform="rotate(-8 18 16)" />
+                            </svg>
+                            Shuffle
+                        </span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Welcome section - shown when Welcome tab is active -->
+            <div class="welcome-section" id="welcomeSection" style="display: none;">
+                <div class="welcome-card">
+                    <div class="welcome-content">
+                        <p>Hi there,</p>
+                        <p>This is a place to notice the small good things in your day. Not achievements or milestones — just the quiet moments that made you smile.</p>
+                        <p>A warm cup of coffee. A stranger who held the door. Finding the perfect parking spot.</p>
+                        <p>Write three each day. They don't need to be profound. The practice is in the noticing.</p>
+                        <p>You'll see others doing the same — a gentle reminder that good things are happening everywhere, all the time.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes-grid initial-load" id="notesGrid">
+                <!-- Row 1 -->
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">Morning coffee perfect temp</div>
+                        <div class="note-item">Stranger smiled on the train</div>
+                        <div class="note-item">Finally fixed that bug</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Sarah in Berlin</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">Kids laughed at my joke</div>
+                        <div class="note-item">Train actually on time</div>
+                        <div class="note-item">Finished that book</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Marcus in London</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">Golden hour canal ride</div>
+                        <div class="note-item">Neighbor's homemade soup</div>
+                        <div class="note-item">Dead plant grew new leaf</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Emma in Amsterdam</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">Nailed work presentation</div>
+                        <div class="note-item">Found €20 in old jacket</div>
+                        <div class="note-item">Dogs at the park so friendly</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Someone in Barcelona</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">Baby slept through night</div>
+                        <div class="note-item">Found the perfect avocado</div>
+                        <div class="note-item">Made someone laugh today</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Priya in Mumbai</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">Rainbow after the storm</div>
+                        <div class="note-item">Old friend called out of blue</div>
+                        <div class="note-item">Lunch was just right</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Someone in São Paulo</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">Got a window seat</div>
+                        <div class="note-item">Remembered to water plants</div>
+                        <div class="note-item">Good hair day finally</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Yuki in Tokyo</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">Wore my favorite sweater</div>
+                        <div class="note-item">No line at the coffee shop</div>
+                        <div class="note-item">Mom's recipe turned out</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Someone in Chicago</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">First snow of the season</div>
+                        <div class="note-item">Cat finally sat on my lap</div>
+                        <div class="note-item">Perfect song on shuffle</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Lisa in Copenhagen</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">Email inbox at zero</div>
+                        <div class="note-item">Found a great podcast</div>
+                        <div class="note-item">Early night, good sleep</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Alex in Melbourne</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+
+                <!-- User's card -->
+                <div class="note-card mine">
+                    <div class="note-items">
+                        <div class="note-item">New bakery croissants</div>
+                        <div class="note-item">Good call with mom</div>
+                        <div class="note-item">Stunning sunset view</div>
+                    </div>
+                    <div class="note-meta"><span>You in Paris</span></div>
+                </div>
+
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">Stranger held the door</div>
+                        <div class="note-item">Parallel parked first try</div>
+                        <div class="note-item">Tea was just right</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Someone in Dublin</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">Package arrived early</div>
+                        <div class="note-item">Bird sang outside window</div>
+                        <div class="note-item">Remembered a nice dream</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Mai in Hanoi</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">Made the bus just in time</div>
+                        <div class="note-item">Free sample at the market</div>
+                        <div class="note-item">Saw a cute dog</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Someone in Stockholm</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">Coworker brought cake</div>
+                        <div class="note-item">Found a quiet spot to read</div>
+                        <div class="note-item">The sunset was orange</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Fatima in Cairo</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+
+                <div class="note-card seed">
+                    <div class="note-items">
+                        <div class="note-item">Fixed something myself</div>
+                        <div class="note-item">Plants are thriving</div>
+                        <div class="note-item">Got lost, found new place</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>Someone in Lisbon</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-pages" id="sidebarPages">
+            <!-- Page 1: Main form -->
+            <div class="sidebar-page">
+                <div class="sidebar-handle"></div>
+                <div class="sidebar-header">
+                    <h2 class="sidebar-title-simple">Three good things</h2>
+                    <button class="close-btn" onclick="closeSidebar()">×</button>
+                </div>
+                <p class="sidebar-subtitle">Big or small, from your day</p>
+
+                <form class="entry-form" onsubmit="handleSubmit(event)">
+                    <textarea 
+                        class="text-input" 
+                        id="mainInput" 
+                        placeholder="Something that made me happy...&#10;A moment I appreciated...&#10;One more good thing..."
+                        required
+                    ></textarea>
+                    
+                    <div class="anon-toggle">
+                        <span class="anon-label">Add anonymously</span>
+                        <label class="switch">
+                            <input type="checkbox" id="anonCheckbox" onchange="updatePreview()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="preview-section">
+                        <div class="preview-label">Preview</div>
+                        <div class="preview-card mine-preview" id="previewCard">
+                            <div class="preview-items">
+                                <div class="preview-item" id="preview1">Waiting for you to write...</div>
+                                <div class="preview-item" id="preview2">...</div>
+                                <div class="preview-item" id="preview3">...</div>
+                            </div>
+                            <div class="preview-meta" id="previewMeta">Someone in Paris</div>
+                        </div>
+                    </div>
+
+                    <div class="submit-area">
+                        <button type="submit" class="submit-btn">Add to the wall</button>
+                        
+                        <!-- Shown after reminder is set -->
+                        <p class="reminder-note" id="reminderNote" style="display: none;">
+                            We'll remind you at <span class="reminder-time">9pm</span> each day. <a href="#" class="reminder-change" onclick="openReminderSettings(event)">change</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Page 2: Reminder settings -->
+            <div class="sidebar-page reminder-page" id="reminderPage">
+                <button class="reminder-back" onclick="hideReminderPage()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5"/>
+                        <path d="M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back
+                </button>
+
+                <div class="reminder-header">
+                    <h3 class="reminder-title">A little nudge</h3>
+                    <p class="reminder-subtitle">We'll drop you a note each evening to remind you to jot down your three things.</p>
+                </div>
+
+                <div class="reminder-field">
+                    <label class="reminder-label">Time</label>
+                    <div class="reminder-time-picker">
+                        <select id="reminderHour" class="time-select">
+                            <option value="7">7:00</option>
+                            <option value="8">8:00</option>
+                            <option value="9" selected>9:00</option>
+                            <option value="10">10:00</option>
+                            <option value="18">6:00</option>
+                            <option value="19">7:00</option>
+                            <option value="20">8:00</option>
+                            <option value="21">9:00</option>
+                        </select>
+                        <select id="reminderPeriod" class="time-select">
+                            <option value="am">AM</option>
+                            <option value="pm" selected>PM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="reminder-field">
+                    <label class="reminder-label">Timezone</label>
+                    <div class="timezone-display" id="timezoneDisplay">Pacific Time (PT)</div>
+                    <div class="timezone-change" onclick="changeTimezone()">Change timezone</div>
+                </div>
+
+                <div class="reminder-actions">
+                    <button type="button" class="reminder-btn primary" onclick="setReminder()">Sounds good</button>
+                    <button type="button" class="reminder-btn secondary" onclick="hideReminderPage()">Maybe later</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile floating view toggle -->
+    <div class="mobile-view-toggle" id="mobileViewToggle">
+        <button class="mobile-toggle-btn active" data-view="everyone">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2.5c-5.2 0.1-9.3 4.4-9.5 9.5 0.2 5.3 4.5 9.4 9.5 9.5 5.1-0.1 9.3-4.2 9.5-9.5-0.2-5.1-4.3-9.4-9.5-9.5z"/>
+                <path d="M2.8 12.2c6.2-0.3 12.1 0.1 18.4-0.2"/>
+                <path d="M12 2.5c-2.1 2.3-3.2 5.8-3.1 9.5 0.1 3.8 1.3 7.2 3.1 9.5"/>
+                <path d="M12 2.5c2.2 2.4 3.3 5.9 3.1 9.5-0.1 3.7-1.2 7.1-3.1 9.5"/>
+            </svg>
+            <span class="toggle-label">Everyone</span>
+        </button>
+        <button class="mobile-toggle-btn" data-view="mine">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3.2 5.8c5.8-0.2 11.7 0.1 17.6-0.1 0.3 4.1-0.1 8.3 0.2 12.4-5.9 0.2-11.8-0.1-17.8 0.2 0.1-4.2-0.2-8.4 0-12.5z"/>
+                <path d="M3.5 6.2c2.8 2.4 5.4 5.1 8.5 7.2 3-2.2 5.7-4.9 8.5-7.1"/>
+            </svg>
+            <span class="toggle-label">Mine</span>
+        </button>
+        <button class="mobile-toggle-btn" data-view="welcome">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20.5c-1.8-1.5-3.8-3.2-5.5-5-1.8-1.9-3.5-4-4.2-6.3-0.5-1.7-0.3-3.6 0.8-5 1.2-1.5 3.1-2.2 4.9-1.9 1.6 0.3 3 1.3 4 2.6 1-1.4 2.5-2.4 4.1-2.6 1.8-0.3 3.7 0.5 4.9 2 1 1.4 1.2 3.3 0.7 4.9-0.7 2.3-2.4 4.4-4.2 6.3-1.7 1.8-3.7 3.5-5.5 5z"/>
+            </svg>
+            <span class="toggle-label">Welcome</span>
+        </button>
+    </div>
+
+    <!-- Sidebar backdrop (mobile blur) -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">Added!</div>
+
+    <script>
+        let isAnonymous = false;
+        let hasStartedTyping = false;
+        let isShuffleMode = false;
+        let cardPositions = new Map();
+        let draggedCard = null;
+        let dragOffset = { x: 0, y: 0 };
+        let velocity = { x: 0, y: 0 };
+        let lastMousePos = { x: 0, y: 0 };
+        let lastMoveTime = 0;
+
+        // Auto-add "1. " when clicking into empty textarea
+        document.getElementById('mainInput').addEventListener('focus', function(e) {
+            if (!hasStartedTyping && this.value.trim() === '') {
+                this.value = '1. ';
+                hasStartedTyping = true;
+            }
+        });
+
+        // Auto-numbering in textarea
+        document.getElementById('mainInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const textarea = e.target;
+                const lines = textarea.value.split('\n');
+                const currentLineIndex = textarea.value.substr(0, textarea.selectionStart).split('\n').length - 1;
+                
+                if (currentLineIndex < 2) {
+                    e.preventDefault();
+                    const nextNumber = currentLineIndex + 2;
+                    const cursorPos = textarea.selectionStart;
+                    const textBefore = textarea.value.substring(0, cursorPos);
+                    const textAfter = textarea.value.substring(cursorPos);
+                    textarea.value = textBefore + '\n' + nextNumber + '. ' + textAfter;
+                    textarea.selectionStart = textarea.selectionEnd = cursorPos + 4;
+                }
+            }
+        });
+
+        // Live preview update
+        document.getElementById('mainInput').addEventListener('input', updatePreview);
+
+        function updatePreview() {
+            const input = document.getElementById('mainInput').value;
+            const lines = input.split('\n').filter(line => line.trim());
+            isAnonymous = document.getElementById('anonCheckbox').checked;
+            
+            for (let i = 0; i < 3; i++) {
+                const previewItem = document.getElementById(`preview${i + 1}`);
+                if (lines[i]) {
+                    const text = lines[i].replace(/^\d+\.\s*/, '').trim();
+                    previewItem.textContent = text || 'Waiting for you to write...';
+                    previewItem.classList.toggle('has-content', text.length > 0);
+                } else {
+                    previewItem.textContent = '...';
+                    previewItem.classList.remove('has-content');
+                }
+            }
+            
+            document.getElementById('previewMeta').textContent = 
+                isAnonymous ? 'Someone in Paris' : 'You in Paris';
+        }
+
+        // Sidebar functions
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('active');
+            document.getElementById('mainWrapper').classList.add('sidebar-open');
+            document.getElementById('sidebarBackdrop').classList.add('active');
+            setTimeout(() => {
+                document.getElementById('mainInput').focus();
+            }, 100);
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('mainWrapper').classList.remove('sidebar-open');
+            document.getElementById('sidebarPages').classList.remove('show-reminder');
+            document.getElementById('sidebarBackdrop').classList.remove('active');
+            hasStartedTyping = false;
+        }
+
+        // Track if reminder has been set up
+        let reminderSetUp = localStorage.getItem('reminderSetUp') === 'true';
+
+        function showReminderPage() {
+            document.getElementById('sidebarPages').classList.add('show-reminder');
+        }
+
+        function hideReminderPage() {
+            document.getElementById('sidebarPages').classList.remove('show-reminder');
+        }
+
+        function openReminderSettings(event) {
+            event.preventDefault();
+            showReminderPage();
+        }
+
+        function setReminder() {
+            const hour = document.getElementById('reminderHour').value;
+            const period = document.getElementById('reminderPeriod').value;
+            const timeString = `${hour}:00 ${period.toUpperCase()}`;
+            
+            // Save to localStorage (in production: save to user profile)
+            localStorage.setItem('reminderSetUp', 'true');
+            localStorage.setItem('reminderTime', timeString);
+            reminderSetUp = true;
+            
+            // Update the reminder note text
+            document.querySelector('.reminder-time').textContent = timeString.toLowerCase().replace(':00 ', '');
+            
+            // Show note on form
+            document.getElementById('reminderNote').style.display = 'block';
+            
+            // Slide back to form, then close sidebar
+            hideReminderPage();
+            setTimeout(() => {
+                closeSidebar();
+                resetForm();
+            }, 400);
+        }
+
+        function dismissReminder() {
+            // User doesn't want reminder - slide back and close
+            hideReminderPage();
+            
+            setTimeout(() => {
+                closeSidebar();
+                resetForm();
+            }, 400);
+        }
+
+        function changeTimezone() {
+            // In production: show timezone picker
+            // For now: just alert
+            alert('Timezone picker coming soon!');
+        }
+
+        // Detect user's timezone on load
+        function detectTimezone() {
+            try {
+                const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                const abbr = new Date().toLocaleTimeString('en-us', { timeZoneName: 'short' }).split(' ')[2];
+                document.getElementById('timezoneDisplay').textContent = `${tz.replace('_', ' ')} (${abbr})`;
+            } catch (e) {
+                document.getElementById('timezoneDisplay').textContent = 'Unknown timezone';
+            }
+        }
+        detectTimezone();
+
+        // Set dynamic date on main page
+        function setDynamicDate() {
+            const now = new Date();
+            const day = now.getDate();
+            const suffix = (day === 1 || day === 21 || day === 31) ? 'st' : 
+                          (day === 2 || day === 22) ? 'nd' : 
+                          (day === 3 || day === 23) ? 'rd' : 'th';
+            const month = now.toLocaleDateString('en-US', { month: 'long' });
+            const year = now.getFullYear();
+            document.getElementById('mainDate').textContent = `Today is the ${day}${suffix} of ${month}, ${year}.`;
+        }
+        setDynamicDate();
+
+        function resetForm() {
+            document.querySelector('.entry-form').reset();
+            isAnonymous = false;
+            document.getElementById('anonCheckbox').checked = false;
+            updatePreview();
+            hasStartedTyping = false;
+        }
+
+        // Form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            const input = document.getElementById('mainInput').value;
+            const lines = input.split('\n').filter(line => line.trim());
+            
+            if (lines.length < 3) {
+                alert('Please write all three good things');
+                return;
+            }
+
+            const items = lines.slice(0, 3).map(line => {
+                return line.replace(/^\d+\.\s*/, '').trim();
+            });
+
+            const newCard = document.createElement('div');
+            newCard.className = 'note-card mine new';
+            newCard.innerHTML = `
+                <div class="note-items">
+                    <div class="note-item">${items[0]}</div>
+                    <div class="note-item">${items[1]}</div>
+                    <div class="note-item">${items[2]}</div>
+                </div>
+                <div class="note-meta">
+                    <span>${isAnonymous ? 'Someone' : 'You'} in Paris</span>
+                </div>
+            `;
+
+            const grid = document.getElementById('notesGrid');
+            
+            // Insert among today's cards (random position in first 2 cards)
+            const cards = grid.querySelectorAll('.note-card');
+            const insertPosition = Math.floor(Math.random() * Math.min(2, cards.length));
+            if (cards[insertPosition]) {
+                grid.insertBefore(newCard, cards[insertPosition]);
+            } else {
+                grid.appendChild(newCard);
+            }
+
+            if (isShuffleMode) {
+                setTimeout(() => {
+                    const gridRect = grid.getBoundingClientRect();
+                    newCard.style.position = 'absolute';
+                    newCard.style.left = '20px';
+                    newCard.style.top = '20px';
+                    newCard.style.transform = `rotate(${(Math.random() - 0.5) * 16}deg)`;
+                    newCard.style.zIndex = grid.children.length;
+                }, 10);
+            }
+
+            // Show toast
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+
+            // Check if this is first time (no reminder set up)
+            if (!reminderSetUp) {
+                // Slide to reminder page
+                setTimeout(() => {
+                    showReminderPage();
+                }, 300);
+            } else {
+                // Already set up - just close sidebar
+                setTimeout(() => {
+                    closeSidebar();
+                    resetForm();
+                }, 300);
+            }
+        }
+
+        // Store grid positions for smooth transitions
+        function storeGridPositions() {
+            const grid = document.getElementById('notesGrid');
+            const cards = grid.querySelectorAll('.note-card');
+            const gridRect = grid.getBoundingClientRect();
+            
+            cards.forEach((card, index) => {
+                const rect = card.getBoundingClientRect();
+                cardPositions.set(card, {
+                    gridX: rect.left - gridRect.left,
+                    gridY: rect.top - gridRect.top,
+                    width: rect.width,
+                    height: rect.height
+                });
+            });
+        }
+
+        // Smooth transition to shuffle mode
+        function enterShuffleMode() {
+            const grid = document.getElementById('notesGrid');
+            const cards = grid.querySelectorAll('.note-card');
+            
+            // First, store current grid positions
+            storeGridPositions();
+            
+            // Calculate grid dimensions
+            const gridRect = grid.getBoundingClientRect();
+            const minHeight = Math.max(600, Math.ceil(cards.length / 5) * 180 + 100);
+            grid.style.minHeight = `${minHeight}px`;
+            
+            // Move cards to absolute positioning at their grid positions first
+            cards.forEach((card, index) => {
+                const pos = cardPositions.get(card);
+                if (pos) {
+                    card.style.position = 'absolute';
+                    card.style.left = `${pos.gridX}px`;
+                    card.style.top = `${pos.gridY}px`;
+                    card.style.width = '160px';
+                    card.style.zIndex = index;
+                }
+            });
+            
+            // Add shuffle-mode class
+            grid.classList.add('shuffle-mode');
+            
+            // Then animate to scattered positions
+            setTimeout(() => {
+                cards.forEach((card, index) => {
+                    const cols = Math.floor(gridRect.width / 180) || 5;
+                    const col = index % cols;
+                    const row = Math.floor(index / cols);
+                    
+                    const baseX = 20 + col * 180;
+                    const baseY = 20 + row * 160;
+                    const randomX = (Math.random() - 0.5) * 100;
+                    const randomY = (Math.random() - 0.5) * 80;
+                    
+                    const x = Math.max(0, Math.min(gridRect.width - 180, baseX + randomX));
+                    const y = Math.max(0, baseY + randomY);
+                    const rotation = (Math.random() - 0.5) * 20;
+                    
+                    card.style.left = `${x}px`;
+                    card.style.top = `${y}px`;
+                    card.style.transform = `rotate(${rotation}deg)`;
+                });
+            }, 50);
+        }
+
+        // Smooth transition back to organized mode
+        function exitShuffleMode() {
+            const grid = document.getElementById('notesGrid');
+            const cards = grid.querySelectorAll('.note-card');
+            
+            // First animate cards back to grid positions
+            cards.forEach((card, index) => {
+                const pos = cardPositions.get(card);
+                if (pos) {
+                    card.style.left = `${pos.gridX}px`;
+                    card.style.top = `${pos.gridY}px`;
+                    card.style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            // After animation completes, remove absolute positioning
+            setTimeout(() => {
+                grid.classList.remove('shuffle-mode');
+                cards.forEach((card) => {
+                    card.style.position = '';
+                    card.style.left = '';
+                    card.style.top = '';
+                    card.style.transform = '';
+                    card.style.width = '';
+                    card.style.zIndex = '';
+                });
+                grid.style.minHeight = '';
+            }, 400);
+        }
+
+        // Drag functionality
+        function startDrag(e, card) {
+            if (!isShuffleMode) return;
+            
+            e.preventDefault();
+            draggedCard = card;
+            draggedCard.classList.add('dragging');
+            
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            const rect = card.getBoundingClientRect();
+            const gridRect = document.getElementById('notesGrid').getBoundingClientRect();
+            
+            dragOffset.x = clientX - rect.left;
+            dragOffset.y = clientY - rect.top;
+            lastMousePos = { x: clientX, y: clientY };
+            lastMoveTime = Date.now();
+            velocity = { x: 0, y: 0 };
+            
+            // Bring to front
+            const cards = document.querySelectorAll('.note-card');
+            cards.forEach(c => c.style.zIndex = parseInt(c.style.zIndex || 0));
+            card.style.zIndex = cards.length + 1;
+        }
+
+        function moveDrag(e) {
+            if (!draggedCard) return;
+            
+            e.preventDefault();
+            
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            const grid = document.getElementById('notesGrid');
+            const gridRect = grid.getBoundingClientRect();
+            
+            let x = clientX - gridRect.left - dragOffset.x;
+            let y = clientY - gridRect.top - dragOffset.y;
+            
+            // Keep within bounds
+            const cardWidth = 160;
+            const cardHeight = 140;
+            x = Math.max(0, Math.min(gridRect.width - cardWidth, x));
+            y = Math.max(0, Math.min(grid.offsetHeight - cardHeight, y));
+            
+            // Calculate velocity for momentum
+            const now = Date.now();
+            const dt = now - lastMoveTime;
+            if (dt > 0) {
+                velocity.x = (clientX - lastMousePos.x) / dt * 16;
+                velocity.y = (clientY - lastMousePos.y) / dt * 16;
+            }
+            lastMousePos = { x: clientX, y: clientY };
+            lastMoveTime = now;
+            
+            // Calculate rotation based on velocity
+            const rotation = Math.max(-15, Math.min(15, velocity.x * 0.5));
+            
+            // Remove transition during drag for immediate response
+            draggedCard.style.transition = 'none';
+            draggedCard.style.left = `${x}px`;
+            draggedCard.style.top = `${y}px`;
+            draggedCard.style.transform = `rotate(${rotation}deg) scale(1.02)`;
+        }
+
+        function endDrag(e) {
+            if (!draggedCard) return;
+            
+            draggedCard.classList.remove('dragging');
+            
+            // Apply momentum
+            const grid = document.getElementById('notesGrid');
+            const gridRect = grid.getBoundingClientRect();
+            const cardWidth = 160;
+            const cardHeight = 140;
+            
+            let x = parseFloat(draggedCard.style.left) + velocity.x * 5;
+            let y = parseFloat(draggedCard.style.top) + velocity.y * 5;
+            
+            // Keep within bounds
+            x = Math.max(0, Math.min(gridRect.width - cardWidth, x));
+            y = Math.max(0, Math.min(grid.offsetHeight - cardHeight, y));
+            
+            // Final rotation (slight random)
+            const finalRotation = (Math.random() - 0.5) * 10;
+            
+            // Re-enable transition for momentum animation
+            draggedCard.style.transition = 'left 0.3s ease-out, top 0.3s ease-out, transform 0.3s ease-out';
+            draggedCard.style.left = `${x}px`;
+            draggedCard.style.top = `${y}px`;
+            draggedCard.style.transform = `rotate(${finalRotation}deg)`;
+            
+            setTimeout(() => {
+                if (draggedCard) {
+                    draggedCard.style.transition = '';
+                }
+                draggedCard = null;
+            }, 300);
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('notesGrid');
+            
+            // Remove initial-load class after animations complete (prevents re-animation on mode toggle)
+            setTimeout(() => {
+                grid.classList.remove('initial-load');
+            }, 600);
+            
+            // Initialize reminder note visibility
+            if (reminderSetUp) {
+                const savedTime = localStorage.getItem('reminderTime') || '9pm';
+                document.querySelector('.reminder-time').textContent = savedTime;
+                document.getElementById('reminderNote').style.display = 'block';
+            }
+            
+            // Store initial grid positions
+            setTimeout(storeGridPositions, 100);
+            
+            // Delegate drag events to cards
+            grid.addEventListener('mousedown', (e) => {
+                const card = e.target.closest('.note-card');
+                if (card && isShuffleMode) startDrag(e, card);
+            });
+            
+            grid.addEventListener('touchstart', (e) => {
+                const card = e.target.closest('.note-card');
+                if (card && isShuffleMode) startDrag(e, card);
+            }, { passive: false });
+            
+            document.addEventListener('mousemove', moveDrag);
+            document.addEventListener('touchmove', moveDrag, { passive: false });
+            
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchend', endDrag);
+
+            // View toggle with sliding indicator
+            const toggleBtns = document.querySelectorAll('.toggle-btn');
+            const toggleIndicator = document.getElementById('toggleIndicator');
+            const welcomeSection = document.getElementById('welcomeSection');
+            const notesGrid = document.getElementById('notesGrid');
+            const modeToggle = document.querySelector('.mode-toggle');
+            
+            // Position indicator on active button
+            function updateIndicator(btn) {
+                const rect = btn.getBoundingClientRect();
+                const parentRect = btn.parentElement.getBoundingClientRect();
+                toggleIndicator.style.width = rect.width + 'px';
+                toggleIndicator.style.transform = `translateX(${rect.left - parentRect.left - 4}px)`;
+            }
+            
+            // Initialize indicator position
+            const activeBtn = document.querySelector('.toggle-btn.active');
+            if (activeBtn) {
+                setTimeout(() => updateIndicator(activeBtn), 50);
+            }
+            
+            toggleBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    toggleBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Animate indicator
+                    updateIndicator(btn);
+                    
+                    const view = btn.dataset.view;
+                    const allCards = document.querySelectorAll('.note-card');
+                    
+                    if (view === 'welcome') {
+                        // Show welcome, hide grid
+                        welcomeSection.style.display = 'block';
+                        notesGrid.style.display = 'none';
+                        modeToggle.style.display = 'none';
+                    } else if (view === 'mine') {
+                        // Show grid filtered to mine
+                        welcomeSection.style.display = 'none';
+                        notesGrid.style.display = 'block';
+                        modeToggle.style.display = 'flex';
+                        
+                        allCards.forEach(card => {
+                            if (!card.classList.contains('mine')) {
+                                card.style.display = 'none';
+                            } else {
+                                card.style.display = 'flex';
+                            }
+                        });
+                    } else {
+                        // Everyone - show all
+                        welcomeSection.style.display = 'none';
+                        notesGrid.style.display = 'block';
+                        modeToggle.style.display = 'flex';
+                        
+                        allCards.forEach(card => {
+                            card.style.display = 'flex';
+                        });
+                    }
+                    
+                    // Re-store positions after filter
+                    setTimeout(storeGridPositions, 100);
+                    
+                    if (isShuffleMode && view !== 'welcome') {
+                        setTimeout(enterShuffleMode, 150);
+                    }
+                });
+            });
+
+            // Mobile view toggle
+            const mobileToggleBtns = document.querySelectorAll('.mobile-toggle-btn');
+            
+            function switchView(view) {
+                const allCards = document.querySelectorAll('.note-card');
+                
+                // Update both desktop and mobile toggles
+                toggleBtns.forEach(b => b.classList.remove('active'));
+                mobileToggleBtns.forEach(b => b.classList.remove('active'));
+                
+                document.querySelector(`.toggle-btn[data-view="${view}"]`)?.classList.add('active');
+                document.querySelector(`.mobile-toggle-btn[data-view="${view}"]`)?.classList.add('active');
+                
+                // Update desktop indicator
+                const activeDesktopBtn = document.querySelector('.toggle-btn.active');
+                if (activeDesktopBtn) updateIndicator(activeDesktopBtn);
+                
+                if (view === 'welcome') {
+                    welcomeSection.style.display = 'block';
+                    notesGrid.style.display = 'none';
+                    modeToggle.style.display = 'none';
+                } else if (view === 'mine') {
+                    welcomeSection.style.display = 'none';
+                    notesGrid.style.display = 'block';
+                    modeToggle.style.display = 'flex';
+                    allCards.forEach(card => {
+                        card.style.display = card.classList.contains('mine') ? 'flex' : 'none';
+                    });
+                } else {
+                    welcomeSection.style.display = 'none';
+                    notesGrid.style.display = 'block';
+                    modeToggle.style.display = 'flex';
+                    allCards.forEach(card => {
+                        card.style.display = 'flex';
+                    });
+                }
+                
+                setTimeout(storeGridPositions, 100);
+                if (isShuffleMode && view !== 'welcome') {
+                    setTimeout(enterShuffleMode, 150);
+                }
+            }
+            
+            mobileToggleBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    switchView(btn.dataset.view);
+                });
+            });
+
+            // Mode toggle (Organize | Shuffle)
+            const modeOptions = document.querySelectorAll('.mode-option');
+            modeOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    modeOptions.forEach(o => o.classList.remove('active'));
+                    option.classList.add('active');
+                    
+                    const mode = option.dataset.mode;
+                    isShuffleMode = mode === 'shuffle';
+                    
+                    if (isShuffleMode) {
+                        enterShuffleMode();
+                    } else {
+                        exitShuffleMode();
+                    }
+                });
+            });
+
+            // ESC key to close sidebar
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeSidebar();
+                }
+            });
+            
+            // Recalculate positions on resize
+            window.addEventListener('resize', () => {
+                if (!isShuffleMode) {
+                    setTimeout(storeGridPositions, 100);
+                }
+            });
+
+            // Scroll-triggered fade-in for cards
+            const fadeObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        fadeObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            // Apply scroll fade only to cards below the fold (after initial animation)
+            setTimeout(() => {
+                const viewportHeight = window.innerHeight;
+                document.querySelectorAll('.note-card').forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    // Only apply fade-in-scroll to cards below the viewport
+                    if (rect.top > viewportHeight) {
+                        card.classList.add('fade-in-scroll');
+                        fadeObserver.observe(card);
+                    }
+                });
+            }, 800);
+        });
+    </script>
+</body>
+</html>
