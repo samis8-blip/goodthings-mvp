@@ -95,7 +95,7 @@
             font-size: 55px;
             font-weight: 400;
             letter-spacing: 0;
-            margin: 0;
+            margin: 0 0 8px 0;
             line-height: 1.1;
         }
 
@@ -670,17 +670,21 @@
         /* Sidebar pages container */
         .sidebar-pages {
             display: flex;
-            width: 200%;
+            width: 300%;
             height: 100%;
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .sidebar-pages.show-reminder {
-            transform: translateX(-50%);
+            transform: translateX(-33.333%);
+        }
+
+        .sidebar-pages.show-signup {
+            transform: translateX(-66.666%);
         }
 
         .sidebar-page {
-            width: 50%;
+            width: 33.333%;
             flex-shrink: 0;
             padding: 32px 28px;
             display: flex;
@@ -688,6 +692,50 @@
             height: 100%;
             overflow-y: auto;
             box-sizing: border-box;
+        }
+
+        /* Signup prompt page styles */
+        .signup-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex: 1;
+            padding: 40px 20px;
+        }
+
+        .signup-content h2 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--charcoal);
+        }
+
+        .signup-content p {
+            font-size: 16px;
+            color: var(--soft-gray);
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        .signup-content .submit-btn {
+            margin-bottom: 16px;
+        }
+
+        .text-btn {
+            background: none;
+            border: none;
+            color: var(--soft-gray);
+            font-size: 14px;
+            cursor: pointer;
+            padding: 8px 16px;
+            font-family: inherit;
+            transition: color 0.2s ease;
+        }
+
+        .text-btn:hover {
+            color: var(--charcoal);
         }
 
         /* Reminder page */
@@ -972,7 +1020,7 @@
 
             .main-title {
                 font-size: 58px;
-                margin-bottom: 12px;
+                margin-bottom: 16px;
             }
 
             .main-tagline {
@@ -1029,7 +1077,8 @@
             .notes-grid {
                 column-count: 2 !important;
                 column-gap: 12px;
-                padding-bottom: 100px; /* Space for floating toggle */
+                padding-bottom: 140px; /* Space for floating toggle */
+                overflow: visible;
             }
 
             .note-card {
@@ -1049,60 +1098,10 @@
                 z-index: 50;
             }
 
-            /* Floating view toggle - matches desktop style */
+            /* Mobile: Reposition floating toggle above browser nav */
             .mobile-view-toggle {
-                position: fixed;
-                bottom: 24px;
+                bottom: 90px;
                 right: 16px;
-                display: inline-flex;
-                gap: 0;
-                background: white;
-                padding: 4px;
-                border-radius: 10px;
-                border: 1px solid var(--border);
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-                z-index: 100;
-            }
-
-            .mobile-toggle-btn {
-                background: none;
-                border: none;
-                padding: 8px 14px;
-                border-radius: 6px;
-                font-size: 13px;
-                font-weight: 500;
-                font-family: inherit;
-                cursor: pointer;
-                transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-                            color 0.2s ease;
-                color: var(--soft-gray);
-                display: flex;
-                align-items: center;
-                gap: 6px;
-            }
-
-            .mobile-toggle-btn .tab-icon {
-                width: 14px;
-                height: 14px;
-                transition: stroke 0.2s ease;
-            }
-
-            .mobile-toggle-btn .toggle-label {
-                display: none;
-                transition: opacity 0.2s ease;
-            }
-
-            .mobile-toggle-btn.active {
-                background: var(--charcoal);
-                color: white;
-            }
-
-            .mobile-toggle-btn.active .toggle-label {
-                display: inline;
-            }
-
-            .mobile-toggle-btn.active .tab-icon {
-                stroke: white;
             }
 
             /* Bottom sheet sidebar */
@@ -1115,12 +1114,14 @@
                 height: auto;
                 max-height: 90vh;
                 border-radius: 24px 24px 0 0;
-                transform: translateY(100%);
+                transform: translateY(calc(100% + 50px));
                 box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.15);
+                visibility: hidden;
             }
 
             .sidebar.active {
                 transform: translateY(0);
+                visibility: visible;
             }
 
             /* Blur backdrop */
@@ -1163,14 +1164,81 @@
                 background: var(--light-gray);
                 border-radius: 2px;
                 margin: 0 auto 16px;
+                cursor: grab;
+            }
+
+            /* Hide X button on mobile - use drag to dismiss instead */
+            .close-btn {
+                display: none;
             }
         }
 
-        /* Hide mobile-only elements on desktop */
+        /* Desktop floating toggle - same as mobile */
+        .mobile-view-toggle {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            display: inline-flex;
+            gap: 0;
+            background: white;
+            padding: 4px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+            z-index: 100;
+        }
+
+        .mobile-toggle-btn {
+            background: none;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s ease-out, color 0.2s ease-out, transform 0.15s ease-out;
+            color: var(--soft-gray);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mobile-toggle-btn .tab-icon {
+            width: 14px;
+            height: 14px;
+            transition: stroke 0.2s ease-out;
+        }
+
+        .mobile-toggle-btn .toggle-label {
+            display: inline;
+            opacity: 0;
+            max-width: 0;
+            overflow: hidden;
+            transition: opacity 0.2s ease-out, max-width 0.2s ease-out;
+            white-space: nowrap;
+        }
+
+        .mobile-toggle-btn.active {
+            background: var(--charcoal);
+            color: white;
+        }
+
+        .mobile-toggle-btn.active .toggle-label {
+            opacity: 1;
+            max-width: 80px;
+        }
+
+        .mobile-toggle-btn.active .tab-icon {
+            stroke: white;
+        }
+
+        /* Hide header toggle on both - use floating instead */
+        .view-toggle {
+            display: none !important;
+        }
+
         @media (min-width: 769px) {
-            .mobile-view-toggle {
-                display: none !important;
-            }
             .sidebar-handle {
                 display: none !important;
             }
@@ -1381,14 +1449,17 @@
                     </div>
                 </div>
 
-                <!-- User's card -->
-                <div class="note-card mine">
+                <!-- Community card (was User's card - now generic for strangers) -->
+                <div class="note-card seed">
                     <div class="note-items">
                         <div class="note-item">New bakery croissants</div>
                         <div class="note-item">Good call with mom</div>
                         <div class="note-item">Stunning sunset view</div>
                     </div>
-                    <div class="note-meta"><span>You in Paris</span></div>
+                    <div class="note-meta">
+                        <span>Emma in Paris</span>
+                        <svg class="seed-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 10 Q 6 6, 8 10 Q 10 14, 12 10 Q 14 6, 17 10" /></svg>
+                    </div>
                 </div>
 
                 <div class="note-card seed">
@@ -1551,6 +1622,17 @@
                     <button type="button" class="reminder-btn secondary" onclick="hideReminderPage()">Maybe later</button>
                 </div>
             </div>
+
+            <!-- Page 3: Signup prompt (shown after 3 contributions) -->
+            <div class="sidebar-page signup-prompt-page">
+                <div class="sidebar-handle"></div>
+                <div class="signup-content">
+                    <h2>You're on a roll!</h2>
+                    <p>You've added 3 good things. Create a free account to keep building your gratitude practice and see all your entries.</p>
+                    <button class="submit-btn" onclick="handleSignup()">Create account</button>
+                    <button class="text-btn" onclick="dismissSignup()">Maybe later</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1650,20 +1732,68 @@
 
         // Sidebar functions
         function openSidebar() {
+            // Check if user has hit contribution limit
+            const stored = localStorage.getItem('goodthings_contributions');
+            const data = stored ? JSON.parse(stored) : { count: 0, cards: [] };
+            
             document.getElementById('sidebar').classList.add('active');
             document.getElementById('mainWrapper').classList.add('sidebar-open');
             document.getElementById('sidebarBackdrop').classList.add('active');
-            setTimeout(() => {
-                document.getElementById('mainInput').focus();
-            }, 100);
+            
+            if (data.count >= 3) {
+                // Show signup prompt immediately
+                setTimeout(() => {
+                    showSignupPrompt();
+                }, 100);
+            } else {
+                setTimeout(() => {
+                    document.getElementById('mainInput').focus();
+                }, 100);
+            }
         }
 
         function closeSidebar() {
             document.getElementById('sidebar').classList.remove('active');
             document.getElementById('mainWrapper').classList.remove('sidebar-open');
             document.getElementById('sidebarPages').classList.remove('show-reminder');
+            document.getElementById('sidebarPages').classList.remove('show-signup');
             document.getElementById('sidebarBackdrop').classList.remove('active');
             hasStartedTyping = false;
+        }
+
+        // Bottom sheet drag to dismiss
+        let sheetStartY = 0;
+        let sheetCurrentY = 0;
+        let isDraggingSheet = false;
+
+        function handleSheetTouchStart(e) {
+            if (window.innerWidth > 768) return;
+            const sidebar = document.getElementById('sidebar');
+            sheetStartY = e.touches[0].clientY;
+            sheetCurrentY = sheetStartY;
+            isDraggingSheet = true;
+            sidebar.style.transition = 'none';
+        }
+
+        function handleSheetTouchMove(e) {
+            if (!isDraggingSheet) return;
+            const sidebar = document.getElementById('sidebar');
+            sheetCurrentY = e.touches[0].clientY;
+            const deltaY = Math.max(0, sheetCurrentY - sheetStartY);
+            sidebar.style.transform = `translateY(${deltaY}px)`;
+        }
+
+        function handleSheetTouchEnd() {
+            if (!isDraggingSheet) return;
+            isDraggingSheet = false;
+            const sidebar = document.getElementById('sidebar');
+            sidebar.style.transition = '';
+            const deltaY = sheetCurrentY - sheetStartY;
+            if (deltaY > 100) {
+                closeSidebar();
+            } else {
+                sidebar.style.transform = '';
+            }
         }
 
         // Track if reminder has been set up
@@ -1716,6 +1846,70 @@
             }, 400);
         }
 
+        // Signup prompt functions
+        function showSignupPrompt() {
+            document.getElementById('sidebarPages').classList.add('show-signup');
+        }
+
+        function hideSignupPrompt() {
+            document.getElementById('sidebarPages').classList.remove('show-signup');
+        }
+
+        function dismissSignup() {
+            // User doesn't want to sign up - close sidebar
+            hideSignupPrompt();
+            setTimeout(() => {
+                closeSidebar();
+                resetForm();
+            }, 400);
+        }
+
+        function handleSignup() {
+            // In production: redirect to signup page or show signup modal
+            // For now: alert and close
+            alert('Signup flow coming soon! For now, your contributions have been saved locally.');
+            hideSignupPrompt();
+            setTimeout(() => {
+                closeSidebar();
+                resetForm();
+            }, 400);
+        }
+
+        // Load user's contributions from localStorage on page load
+        function loadUserContributions() {
+            const stored = localStorage.getItem('goodthings_contributions');
+            if (!stored) return;
+            
+            const data = JSON.parse(stored);
+            if (!data.cards || data.cards.length === 0) return;
+            
+            const grid = document.getElementById('notesGrid');
+            
+            // Add user's cards to the grid
+            data.cards.forEach((cardData, index) => {
+                const newCard = document.createElement('div');
+                newCard.className = 'note-card mine';
+                newCard.dataset.cardId = cardData.id;
+                newCard.innerHTML = `
+                    <div class="note-items">
+                        <div class="note-item">${cardData.items[0]}</div>
+                        <div class="note-item">${cardData.items[1]}</div>
+                        <div class="note-item">${cardData.items[2]}</div>
+                    </div>
+                    <div class="note-meta">
+                        <span>${cardData.anonymous ? 'Someone' : 'You'} in Paris</span>
+                    </div>
+                `;
+                
+                // Insert at the beginning of the grid
+                if (grid.firstChild) {
+                    grid.insertBefore(newCard, grid.children[Math.min(index, grid.children.length)]);
+                } else {
+                    grid.appendChild(newCard);
+                }
+            });
+        }
+
         function changeTimezone() {
             // In production: show timezone picker
             // For now: just alert
@@ -1759,6 +1953,16 @@
         function handleSubmit(event) {
             event.preventDefault();
             
+            // Check contribution count from localStorage
+            const stored = localStorage.getItem('goodthings_contributions');
+            const data = stored ? JSON.parse(stored) : { count: 0, cards: [] };
+            
+            if (data.count >= 3) {
+                // Show signup prompt instead of submitting
+                showSignupPrompt();
+                return;
+            }
+            
             const input = document.getElementById('mainInput').value;
             const lines = input.split('\n').filter(line => line.trim());
             
@@ -1771,8 +1975,20 @@
                 return line.replace(/^\d+\.\s*/, '').trim();
             });
 
+            // Save to localStorage
+            const cardId = 'card_' + Date.now();
+            data.count++;
+            data.cards.push({
+                id: cardId,
+                items: items,
+                timestamp: Date.now(),
+                anonymous: isAnonymous
+            });
+            localStorage.setItem('goodthings_contributions', JSON.stringify(data));
+
             const newCard = document.createElement('div');
             newCard.className = 'note-card mine new';
+            newCard.dataset.cardId = cardId;
             newCard.innerHTML = `
                 <div class="note-items">
                     <div class="note-item">${items[0]}</div>
@@ -2041,6 +2257,9 @@
                 document.getElementById('reminderNote').style.display = 'block';
             }
             
+            // Load user's contributions from localStorage
+            loadUserContributions();
+            
             // Store initial grid positions
             setTimeout(storeGridPositions, 100);
             
@@ -2060,6 +2279,22 @@
             
             document.addEventListener('mouseup', endDrag);
             document.addEventListener('touchend', endDrag);
+
+            // Bottom sheet drag to dismiss (mobile only)
+            const sidebar = document.getElementById('sidebar');
+            const sidebarHandle = sidebar.querySelector('.sidebar-handle');
+            if (sidebarHandle) {
+                sidebarHandle.addEventListener('touchstart', handleSheetTouchStart, { passive: true });
+                sidebarHandle.addEventListener('touchmove', handleSheetTouchMove, { passive: false });
+                sidebarHandle.addEventListener('touchend', handleSheetTouchEnd);
+            }
+            // Also allow dragging from the sidebar header area
+            const sidebarHeader = sidebar.querySelector('.sidebar-header');
+            if (sidebarHeader) {
+                sidebarHeader.addEventListener('touchstart', handleSheetTouchStart, { passive: true });
+                sidebarHeader.addEventListener('touchmove', handleSheetTouchMove, { passive: false });
+                sidebarHeader.addEventListener('touchend', handleSheetTouchEnd);
+            }
 
             // View toggle with sliding indicator
             const toggleBtns = document.querySelectorAll('.toggle-btn');
